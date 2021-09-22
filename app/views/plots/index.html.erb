@@ -9,10 +9,12 @@
 
       <%plot.plants.each do |plant|%>
         <ul>
-          <li> <%= plant.name %> </li>
+        <section id="plant-<%= plant.id %>">
+          <li> <%= plant.name %> <%= link_to "Remove Plant", "/plots/#{plot.id}/#{plant.id}", method: :delete%> </li>
+        </section>
         </ul>
 
       <% end %>
       </ul>
-      <% end %>
   </section>
+  <% end %>

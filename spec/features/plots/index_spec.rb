@@ -34,14 +34,30 @@ RSpec.describe 'plots index page' do
   end
 
   it 'has a list of all plot numbers and the plants in that plot' do
-    save_and_open_page
     within("#plots-#{@plot1.id}") do
       expect(page).to have_content(@plot1.number)
       expect(page).to have_content(@plant1.name)
       expect(page).to have_content(@plant2.name)
       expect(page).to have_content(@plant5.name)
     end
+  end
 
-
+  it 'has a link next to each plant to delete that plant from that plot' do
+    
+    within("#plots-#{@plot1.id}") do
+      expect(page).to have_content(@plot1.number)
+      expect(page).to have_content(@plant1.name)
+      expect(page).to have_content(@plant2.name)
+      expect(page).to have_content(@plant5.name)
+      within ("#plant-#{@plant1.id}") do
+        click_on "Remove Plant"
+        expect(current_path).to eq("/plots")
+      end
+      expect(page).to_not have_content(@plant1.name)
+    end
+    save_and_open_page
+    within("#plots-#{@plot2.id}") do
+      expect(page).to have_content(@plant1.name)
+    end
   end
 end
