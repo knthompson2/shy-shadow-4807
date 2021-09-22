@@ -1,0 +1,7 @@
+<h1> <%= @garden.name%> </h1>
+<h3> All Plants in <%= @garden.name %></h3>
+<% @garden.all_plants_under_100.each do |plant| %>
+  <ul>
+    <li><%= plant %> </li>
+  </ul>
+<% end %>

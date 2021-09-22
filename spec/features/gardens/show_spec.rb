@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'plots index page' do
+RSpec.describe 'garden show page' do
   before :each do
     @garden = Garden.create!(name: "Turing Community Garden", organic: true)
     @plot1 = @garden.plots.create!(number: 1, size: "Small", direction: "North")
@@ -23,40 +23,20 @@ RSpec.describe 'plots index page' do
     PlantPlot.create!(plant: @plant5, plot: @plot2)
     PlantPlot.create!(plant: @plant1, plot: @plot3)
     PlantPlot.create!(plant: @plant6, plot: @plot3)
-    PlantPlot.create!(plant: @plant7, plot: @plot3)
     PlantPlot.create!(plant: @plant4, plot: @plot4)
     PlantPlot.create!(plant: @plant5, plot: @plot4)
     PlantPlot.create!(plant: @plant6, plot: @plot4)
-    PlantPlot.create!(plant: @plant7, plot: @plot4)
     PlantPlot.create!(plant: @plant3, plot: @plot4)
-
-    visit "/plots"
   end
 
-  it 'has a list of all plot numbers and the plants in that plot' do
-    within("#plots-#{@plot1.id}") do
-      expect(page).to have_content(@plot1.number)
-      expect(page).to have_content(@plant1.name)
-      expect(page).to have_content(@plant2.name)
-      expect(page).to have_content(@plant5.name)
-    end
+  it 'lists all plants for the garden with days to harvest less that 100' do
+    visit "/gardens/#{@garden.id}"
+
+    expect(page).to have_content(@plant2.name)
+    expect(page).to have_content(@plant4.name)
+    expect(page).to have_content(@plant5.name)
+    expect(page).to have_content(@plant1.name)
   end
 
-  it 'has a link next to each plant to delete that plant from that plot' do
 
-    within("#plots-#{@plot1.id}") do
-      expect(page).to have_content(@plot1.number)
-      expect(page).to have_content(@plant1.name)
-      expect(page).to have_content(@plant2.name)
-      expect(page).to have_content(@plant5.name)
-      within ("#plant-#{@plant1.id}") do
-        click_on "Remove Plant"
-        expect(current_path).to eq("/plots")
-      end
-      expect(page).to_not have_content(@plant1.name)
-    end
-    within("#plots-#{@plot2.id}") do
-      expect(page).to have_content(@plant1.name)
-    end
-  end
 end
